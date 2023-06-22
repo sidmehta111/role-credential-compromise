@@ -12,7 +12,7 @@ To run this demo, we need the following:
 2. A user account (or IDP account) with enough permissions to do operations
 such as running instances, creating roles and policies and passing roles
 3. Terraform installed locally. Here are the steps for Mac:
-```shell
+```
  brew update
  brew tap hashicorp/tap
  brew install hashicorp/tap/terraform
