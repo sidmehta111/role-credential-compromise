@@ -1,15 +1,10 @@
-#All variables are required to change
-#AWS Profile
-variable "profile" {
-  default = "pentest"
-}
 #AWS Region
 variable "region" {
-  default = "us-west-1"
+  default = "us-east-1"
 }
 #CGID Variable for unique naming
 variable "cgid" {
-  default = "rtg"
+  default = "prismacloud-credential-compromise"
 }
 #SSH Public Key
 variable "ssh-public-key-for-ec2" {
@@ -21,23 +16,18 @@ variable "ssh-private-key-for-ec2" {
 }
 #Stack Name
 variable "stack-name" {
-  default = "CredentialCompromise"
+  default = "prismacloud-credential-compromise"
 }
 #Scenario Name
 variable "scenario-name" {
-  default = "ec2-ssrf"
+  default = "prismacloud-credential-compromise-ec2-ssrf"
 }
-#Vpc Id
-#variable "vpc-id" {
-#  default = <vpc_id>
-#}
-#Vpc Id
-#variable "subnet-id" {
-#  default = <subnet_id>
-#}
 #s3 bucket to simulate attack
+resource "random_id" "id" {
+    byte_length = 8
+}
 variable "credcomp-s3-bucket" {
-  default = "rtg-credcomp-test-bucket"
+  default = "$(random_id.id.hex)-credcomp-test-bucket"
 }
 #Cidr blocks that can access EC2 via ssh
 variable "credcomp-cidr-ssh" {
