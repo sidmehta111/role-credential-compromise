@@ -4,6 +4,7 @@ resource “random_id” “id” {
 }
 resource “aws_s3_bucket” “credcompromise” {
   bucket = “$(random_id.id.hex)-credcompromise”
+  force_destroy = true
 }
 resource “aws_s3_bucket_public_access_block” “public_access_block” {
   bucket = aws_s3_bucket.credcompromise.id
