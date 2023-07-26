@@ -1,10 +1,7 @@
 #S3 bucket
-resource “random_id” “id” {
-    byte_length = 8
-}
-resource “aws_s3_bucket” “credcompromise” {
-  bucket = “$(random_id.id.hex)-credcompromise”
-  force_destroy = true
+resource "aws_s3_bucket" "credcomp" {
+    bucket = var.credcomp-s3-bucket
+    force_destroy = true
 }
 resource “aws_s3_bucket_public_access_block” “public_access_block” {
   bucket = aws_s3_bucket.credcompromise.id
