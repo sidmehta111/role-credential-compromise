@@ -7,13 +7,13 @@ variable "cgid" {
   default = "prismacloud-credential-compromise"
 }
 #SSH Public Key
-variable "ssh-public-key-for-ec2" {
-  default = "../credcomp.pub"
-}
+#variable "ssh-public-key-for-ec2" {
+#  default = "../credcomp.pub"
+#}
 #SSH Private Key
-variable "ssh-private-key-for-ec2" {
-  default = "../credcomp"
-}
+#variable "ssh-private-key-for-ec2" {
+#  default = "../credcomp"
+#}
 #Stack Name
 variable "stack-name" {
   default = "prismacloud-credential-compromise"
