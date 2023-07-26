@@ -23,11 +23,9 @@ variable "scenario-name" {
   default = "prismacloud-credential-compromise-ec2-ssrf"
 }
 #s3 bucket to simulate attack
-resource "random_id" "id" {
-    byte_length = 8
-}
+resource "random_uuid" "uuid" {}
 variable "credcomp-s3-bucket" {
-  default = "$(random_id.id.hex)-credcomp-test-bucket"
+  default = "${random_uuid.uuid.result}-credcomp-test-bucket"
 }
 #Cidr blocks that can access EC2 via ssh
 variable "credcomp-cidr-ssh" {
