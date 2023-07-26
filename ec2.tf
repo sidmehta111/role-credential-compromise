@@ -102,10 +102,10 @@ resource "aws_security_group" "credcomp-ec2-http-security-group" {
   }
 }
 #AWS Key Pair
-resource "aws_key_pair" "credcomp-ec2-key-pair" {
-  key_name = "credcomp-ec2-key-pair-${var.cgid}"
-  public_key = file(var.ssh-public-key-for-ec2)
-}
+#resource "aws_key_pair" "credcomp-ec2-key-pair" {
+#  key_name = "credcomp-ec2-key-pair-${var.cgid}"
+#  public_key = file(var.ssh-public-key-for-ec2)
+#}
 #EC2 Instance
 resource "aws_instance" "credcomp-ubuntu-ec2" {
     ami = "ami-0d221cb540e0015f4"
@@ -116,7 +116,7 @@ resource "aws_instance" "credcomp-ubuntu-ec2" {
         aws_security_group.credcomp-ec2-ssh-security-group.id,
         aws_security_group.credcomp-ec2-http-security-group.id
     ]
-    key_name = aws_key_pair.credcomp-ec2-key-pair.key_name
+   # key_name = aws_key_pair.credcomp-ec2-key-pair.key_name
     root_block_device {
         volume_type = "gp2"
         volume_size = 8
