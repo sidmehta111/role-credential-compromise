@@ -101,9 +101,20 @@ resource "aws_security_group" "credcomp-ec2-http-security-group" {
     Scenario = var.scenario-name
   }
 }
+data "aws_ami" "ubuntu" {
+    most_recent = true
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    }
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+}
 #EC2 Instance
 resource "aws_instance" "credcomp-ubuntu-ec2" {
-    ami = "ami-0d221cb540e0015f4"
+    ami = "${data.aws_ami.ubuntu.id}"
     instance_type = "t2.micro"
     iam_instance_profile = aws_iam_instance_profile.credcomp-ec2-instance-profile.name
     subnet_id = aws_subnet.credcomp-public-subnet-1.id
