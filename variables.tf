@@ -13,7 +13,7 @@ variable "scenario-name" {
 }
 #s3 bucket to simulate attack
 variable "credcomp-s3-bucket" {
-  default = "PrismaCloud-credcomp-bucket"
+  default = "prismacloud-credcomp-bucket"
 }
 #Cidr blocks that can access EC2 via ssh
 variable "credcomp-cidr-ssh" {
