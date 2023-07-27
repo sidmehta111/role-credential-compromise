@@ -12,6 +12,10 @@ output "instance_name" {
   value       = aws_instance.credcomp-ubuntu-ec2.id
 }
 output "role_name" {
-  description = "Role name"
+  description = "Role Name"
   value       = aws_iam_role.credcomp-ec2-role.id
+}
+output "bucket_name" {
+  description = "Bucket Name"
+  value = aws_s3_bucket.credcomp.id
 }

@@ -15,7 +15,7 @@ variable "scenario-name" {
 variable "credcomp-s3-bucket" {
   default = "prismacloud-credcomp-bucket"
 }
-#Cidr blocks that can access EC2 via ssh
+/* #Cidr blocks that can access EC2 via ssh
 variable "credcomp-cidr-ssh" {
   default = [
     "199.167.52.5/32",
@@ -28,4 +28,4 @@ variable "credcomp-cidr-http" {
     "199.167.52.5/32",
     "137.83.193.95/32"
   ]
-}
+} */

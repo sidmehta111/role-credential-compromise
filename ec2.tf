@@ -52,6 +52,9 @@ resource "aws_iam_instance_profile" "credcomp-ec2-instance-profile" {
   name = "PrismaCloud-credcomp-ec2-instance-profile-${random_string.random_suffix.id}"
   role = aws_iam_role.credcomp-ec2-role.name
 }
+data "external" "current_ip" {
+  program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
+}
 #Security Groups
 resource "aws_security_group" "credcomp-ec2-ssh-security-group" {
   name = "PrismaCloud-credcomp-ec2-ssh-${random_string.random_suffix.id}"
@@ -61,7 +64,7 @@ resource "aws_security_group" "credcomp-ec2-ssh-security-group" {
       from_port = 22
       to_port = 22
       protocol = "tcp"
-      cidr_blocks = var.credcomp-cidr-ssh
+      cidr_blocks = ["${data.external.current_ip.result.ip}/32"]
   }
   egress {
       from_port = 0
@@ -85,7 +88,7 @@ resource "aws_security_group" "credcomp-ec2-http-security-group" {
       from_port = 80
       to_port = 80
       protocol = "tcp"
-      cidr_blocks = var.credcomp-cidr-http
+      cidr_blocks = ["${data.external.current_ip.result.ip}/32"]
   }
   egress {
       from_port = 0
@@ -96,7 +99,7 @@ resource "aws_security_group" "credcomp-ec2-http-security-group" {
       ]
   }
   tags = {
-    Name = "credcomp-ec2-http-${random_string.random_suffix.id}"
+    Name = "PrismaCloud-credcomp-ec2-http-${random_string.random_suffix.id}"
     Stack = var.stack-name
     Scenario = var.scenario-name
   }
