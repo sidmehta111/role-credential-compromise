@@ -1,7 +1,7 @@
 #Iam Role Policy
 resource "aws_iam_policy" "credcomp-ec2-role-policy" {
-  name = "credcomp-ec2-role-policy-${var.cgid}"
-  description = "credcomp-ec2-role-policy-${var.cgid}"
+  name = "PrismaCloud-credcomp-ec2-role-policy-${random_string.random_suffix.id}"
+  description = "credcomp-ec2-role-policy-${random_string.random_suffix.id}"
   policy = jsonencode({
       "Version": "2012-10-17",
       "Statement": [
@@ -19,7 +19,7 @@ resource "aws_iam_policy" "credcomp-ec2-role-policy" {
 }
 #IAM Role
 resource "aws_iam_role" "credcomp-ec2-role" {
-  name = "credcomp-ec2-role-${var.cgid}"
+  name = "PrismaCloud-credcomp-ec2-role-${random_string.random_suffix.id}"
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -34,14 +34,14 @@ resource "aws_iam_role" "credcomp-ec2-role" {
     ]
   })
   tags = {
-      Name = "credcomp-ec2-role-${var.cgid}"
+      Name = "credcomp-ec2-role-${random_string.random_suffix.id}"
       Stack = var.stack-name
       Scenario = var.scenario-name
   }
 }
 #IAM Role Policy Attachment
 resource "aws_iam_policy_attachment" "credcomp-ec2-role-policy-attachment" {
-  name = "credcomp-ec2-role-policy-attachment-${var.cgid}"
+  name = "credcomp-ec2-role-policy-attachment-${random_string.random_suffix.id}"
   roles = [
       aws_iam_role.credcomp-ec2-role.name
   ]
@@ -49,13 +49,13 @@ resource "aws_iam_policy_attachment" "credcomp-ec2-role-policy-attachment" {
 }
 #IAM Instance Profile
 resource "aws_iam_instance_profile" "credcomp-ec2-instance-profile" {
-  name = "credcomp-ec2-instance-profile-${var.cgid}"
+  name = "PrismaCloud-credcomp-ec2-instance-profile-${random_string.random_suffix.id}"
   role = aws_iam_role.credcomp-ec2-role.name
 }
 #Security Groups
 resource "aws_security_group" "credcomp-ec2-ssh-security-group" {
-  name = "credcomp-ec2-ssh-${var.cgid}"
-  description = "Credential compromise ${var.cgid} Security Group for EC2 Instance over SSH"
+  name = "PrismaCloud-credcomp-ec2-ssh-${random_string.random_suffix.id}"
+  description = "Credential compromise ${random_string.random_suffix.id} Security Group for EC2 Instance over SSH"
   vpc_id = aws_vpc.credcomp-vpc.id
   ingress {
       from_port = 22
@@ -72,14 +72,14 @@ resource "aws_security_group" "credcomp-ec2-ssh-security-group" {
       ]
   }
   tags = {
-    Name = "credcomp-ec2-ssh-${var.cgid}"
+    Name = "PrismaCloud-credcomp-ec2-ssh-${random_string.random_suffix.id}"
     Stack = var.stack-name
     Scenario = var.scenario-name
   }
 }
 resource "aws_security_group" "credcomp-ec2-http-security-group" {
-  name = "credcomp-ec2-http-${var.cgid}"
-  description = "Credential compromise ${var.cgid} Security Group for EC2 Instance over HTTP"
+  name = "PrismaCloud-credcomp-ec2-http-${random_string.random_suffix.id}"
+  description = "Credential compromise ${random_string.random_suffix.id} Security Group for EC2 Instance over HTTP"
   vpc_id = aws_vpc.credcomp-vpc.id
   ingress {
       from_port = 80
@@ -96,16 +96,11 @@ resource "aws_security_group" "credcomp-ec2-http-security-group" {
       ]
   }
   tags = {
-    Name = "credcomp-ec2-http-${var.cgid}"
+    Name = "credcomp-ec2-http-${random_string.random_suffix.id}"
     Stack = var.stack-name
     Scenario = var.scenario-name
   }
 }
-#AWS Key Pair
-#resource "aws_key_pair" "credcomp-ec2-key-pair" {
-#  key_name = "credcomp-ec2-key-pair-${var.cgid}"
-#  public_key = file(var.ssh-public-key-for-ec2)
-#}
 #EC2 Instance
 resource "aws_instance" "credcomp-ubuntu-ec2" {
     ami = "ami-0d221cb540e0015f4"
@@ -116,7 +111,6 @@ resource "aws_instance" "credcomp-ubuntu-ec2" {
         aws_security_group.credcomp-ec2-ssh-security-group.id,
         aws_security_group.credcomp-ec2-http-security-group.id
     ]
-   # key_name = aws_key_pair.credcomp-ec2-key-pair.key_name
     root_block_device {
         volume_type = "gp2"
         volume_size = 8
@@ -139,16 +133,16 @@ resource "aws_instance" "credcomp-ubuntu-ec2" {
         unzip awscliv2.zip
         sudo ./aws/install
         echo "test" > critical.txt
-        aws s3api put-object --bucket ${var.credcomp-s3-bucket} --key critical.txt --body critical.txt
-        aws s3api put-bucket-versioning --bucket ${var.credcomp-s3-bucket} --versioning-configuration Status=Enabled
+        aws s3api put-object --bucket ${aws_s3_bucket.credcomp.bucket} --key critical.txt --body critical.txt
+        aws s3api put-bucket-versioning --bucket ${aws_s3_bucket.credcomp.bucket} --versioning-configuration Status=Enabled
         EOF
     volume_tags = {
-        Name = "Credential compromise ${var.cgid} EC2 Instance Root Device"
+        Name = "Credential compromise ${random_string.random_suffix.id} EC2 Instance Root Device"
         Stack = var.stack-name
         Scenario = var.scenario-name
     }
     tags = {
-        Name = "credcomp-ubuntu-ec2-${var.cgid}"
+        Name = "credcomp-ubuntu-ec2-${random_string.random_suffix.id}"
         Stack = var.stack-name
         Scenario = var.scenario-name
     }

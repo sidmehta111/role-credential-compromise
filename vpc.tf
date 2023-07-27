@@ -3,7 +3,7 @@ resource "aws_vpc" "credcomp-vpc" {
   cidr_block = "10.10.0.0/16"
   enable_dns_hostnames = true
   tags = {
-      Name = "Credential compromise ${var.cgid} VPC"
+      Name = "Credential compromise ${random_string.random_suffix.id} VPC"
       Stack = var.stack-name
       Scenario = var.scenario-name
   }
@@ -14,7 +14,7 @@ resource "aws_subnet" "credcomp-public-subnet-1" {
   cidr_block = "10.10.10.0/24"
   vpc_id = aws_vpc.credcomp-vpc.id
   tags = {
-    Name = "Credential compromise ${var.cgid} Public Subnet #1"
+    Name = "Credential compromise ${random_string.random_suffix.id} Public Subnet #1"
     Stack = var.stack-name
     Scenario = var.scenario-name
   }
@@ -23,7 +23,7 @@ resource "aws_subnet" "credcomp-public-subnet-1" {
 resource "aws_internet_gateway" "credcomp-internet-gateway" {
   vpc_id = aws_vpc.credcomp-vpc.id
   tags = {
-      Name = "Credential compromise ${var.cgid} Internet Gateway"
+      Name = "Credential compromise ${random_string.random_suffix.id} Internet Gateway"
       Stack = var.stack-name
       Scenario = var.scenario-name
   }
@@ -36,7 +36,7 @@ resource "aws_route_table" "credcomp-public-subnet-route-table" {
       gateway_id = aws_internet_gateway.credcomp-internet-gateway.id
   }
   tags = {
-      Name = "Credential compromise ${var.cgid} Route Table for Public Subnet"
+      Name = "Credential compromise ${random_string.random_suffix.id} Route Table for Public Subnet"
       Stack = var.stack-name
       Scenario = var.scenario-name
   }
